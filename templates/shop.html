@@ -1,0 +1,415 @@
+ {% load cart %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shop</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/static/css/style.css">
+     
+
+    <!--click back button brwoser page not back-->
+    <script type="text/javascript">
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout("preventBack()", 0);
+
+        window.onunload = function () { null };
+    </script>
+    
+
+
+</head>
+
+<body>
+
+
+
+    <!-- header section starts  -->
+
+
+    <header class="header">
+
+        <a href="/" class="logo"> <i class="fas fa-shopping-basket"></i> Kookoole </a>
+
+        <nav class="navbar">
+            <a href="/">shop</a>
+            <a href="/Contact/">contact</a>
+            <a href="/about/">about us</a>
+
+        </nav>
+
+
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="search-btn" class="fas fa-search"></div>
+            <div id="cart-btn" class="fas fa-shopping-cart"></div>
+            <span style="background-color: turquoise; padding-top: 0.15rem; padding-left: 0.15rem; padding-right: 0.17rem "><b>{{request.session.cart.keys|length}}</b></span>
+
+            <div id="login-btn" class="fas fa-user"></div>
+
+        </div>
+
+
+         <form action="/search-products/#pro" class="search-form">
+                <input type="search" placeholder="search here..." id="query" name="query">
+                <button style="background-color: turquoise;
+                               padding-top: 0.25rem;
+                               padding-left: 0.25rem;
+                               padding-right: 0.27rem " for="search-box" class="fas fa-search" type="submit">
+                    search
+
+                </button>
+         </form> 
+
+         
+
+        <div class="shopping-cart">
+
+
+            <a href="/cart-in/" class="btn">Your cart</a>
+            <a href="/manage-orders/" class="btn">Manage Your Oders</a>
+            <a href="/orders-status/" class="btn">Your Oder status</a>
+        </div>
+
+
+        <form action="/" method="POST" class="login-form">
+
+
+            {% csrf_token %}
+
+
+            {% if request.session.customer_id %}
+            <h3>My Profile</h3>
+
+
+
+            <div class="box-container" style="background-size:cover;background-position:center;text-align:center">
+                <label for="profileimg">
+                    <img src="{{customer_img}}" style="width:150px; height:150px;border-radius:55%;background:#808080; padding:6px;
+                                                              margin-top:20px;align-content:center;cursor:pointer " width="50" height="50">
+                </label>
+
+                <input type="file" name="" id="profileimg" style="display: none;  ">
+
+            </div>
+
+            <a href="/log-out/" class="btn">logout</a>
+
+            <p style="text-align: left">Name : {{customer_first_name}} {{customer_last_name}} </p>
+
+            <p style="text-align: left;text-transform:lowercase">
+                Email : {{customer}}
+                {% if customer_verify %}
+                <i class="fa fa-check" style="font-size:15px;color:seagreen"></i>
+                {% else %}
+                <a href="/veryfy_from_profile/" style="color:red">verify</a>
+                {% endif %}
+            </p>
+            <p style="text-align: left">phone : {{customer_phone}}</p>
+            <p style="text-align: left">
+                change your password :
+                <a href="/change_your_password/" style="color:red">click</a>
+            </p>
+            <a href="/edit_profile/" class="btn">edit profile</a>
+
+            {% else %}
+            <h3>Profile</h3>
+            <p>Log In ? <a href="/log-in/">click here</a></p>
+            <p>forget password? <a href="/Forget_password/">click here</a></p>
+            <p>don't have an account? <a href="/sign-up/">create one</a></p>
+            {% endif %}
+        </form>
+
+    </header>
+
+    <!-- header section ends -->
+
+
+    <section class="home">
+
+        <div class="slides-container">
+
+            <div class="slide active">
+                <div class="content">
+                    <span>fresh and organic</span>
+                    <h3>upto 50% off</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-3.png" alt="">
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="content">
+                    <span>fresh and organic</span>
+                    <h3>upto 50% off</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-1.png" alt="">
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="content">
+                    <span>fresh and organic</span>
+                    <h3>upto 50% off</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-2.png" alt="">
+                </div>
+            </div>
+
+        </div>
+
+        <div id="next-slide" class="fas fa-angle-right" onclick="next()"></div>
+        <div id="prev-slide" class="fas fa-angle-left" onclick="next()"></div>
+
+    </section>
+
+    <section class="category" id="categor2">
+
+        <h1 class="title">our <span>category</span>  <a href="/#pro">view all category>></a> </h1>
+
+        <div class="box-container">
+            {%for i in categoriesroot %}
+            <a href="/?root_category={{i.id}}#categor" class="box">
+                <img src="/media/{{i.image}}" alt="">
+                <h3>{{i.name}}</h3>
+            </a>
+            {% endfor %}
+        </div>
+
+    </section>
+
+
+
+    <section class="category" id="subcategor">
+
+        <h1 class="title">selected <span>category</span>  <a href="/#pro">view all category>></a> </h1>
+
+        <div class="box-container" id="categor">
+            {%for i in subcategories %}
+            <a href="/?category={{i.id}}#pro" class="box">
+                <img src="/media/{{i.image}}" alt=""> 
+                <h3>{{i.name}}</h3>
+            </a>
+            {% endfor %}
+        </div>
+
+    </section>
+
+
+    <section class="products" id="pro">
+
+        <h1 class="title"> our <span>products</span> <a href="/#pro">view all >></a> </h1>
+
+        <div class="box-container">
+
+
+            {% for product in products %}
+
+            <div class="box" id="{{product.id}}">
+
+                <div class="image">
+                    <img src="/media/{{product.image}}" alt="">
+                </div>
+                <div class="content" id="here">
+                    <h3>{{product.name}}</h3>
+                     
+                    <div class="price">Rs {{product.price}}</div>
+
+                     
+                    <form action="#{{product.id}}" method="POST">
+
+                        {% csrf_token %}
+                        <input hidden type="text" value='{{product.stock}}' name="stock">
+
+                        <input hidden type="text" value='{{product.id}}' name="id">
+                        <input hidden type="text" value='{{product.category_id}}' name="categoryid">
+                        <input hidden type="text" value='{{product.root_category_id}}' name="rootcategoryid">
+
+                        {% if product|is_in_cart:request.session.cart %}
+                        <!--quntity increase button-->
+                        {% if product.stock <= 0 %}
+                        <h1 style="color: red">Out Of stuck/ଷ୍ଟକ୍ ନାହିଁ</h1>
+                        {% else %}
+
+
+
+
+
+
+                        <input href="/" id="" type="submit" name="minus" class="float-left btn" value="-">
+
+
+                        <label for="list_quantity" class="float-left btn" style="background-color:red">
+
+                            <select typeof="" name="qty" required id="list_quantity" onchange="this.form.submit()">
+                                <option value="{{product|cart_quantity:request.session.cart}}" selected>{{product|cart_quantity:request.session.cart}}</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+
+                            </select>
+
+                        </label>
+
+                        <input href="/" type="submit" name="plus" class="float-right btn" value="+">
+
+                        {% endif %}
+                        <!--end quntity increase button-->
+                        {% else %}
+
+                        <!--add to card button-->
+                        {% if product.stock <= 0 %}
+                        <h1 style="color: red">Out Of stuck/ଷ୍ଟକ୍ ନାହିଁ</h1>
+                        {% else %}
+
+                        <input href="" type="submit" class="float-right btn" value="Add To  Cart">
+                        {% endif %}
+                        <!--end-->
+                        {% endif %}
+
+
+                    </form>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+
+    <!--floating button-->
+    <section>
+        <div onclick=window.location.href="#subcategor" style="position:fixed;
+                bottom :5%;
+                right :20px;
+                text-align :center;
+                color:#0bcbeb">
+            <div href="/#categor" style="width: 55px; height: 50px; border-radius: 35%;border-block-end-style:solid;
+      background-repeat: no-repeat; background-color: #00778b; background-size: 24px; background-position: center;
+      float: right; margin: 0 auto; cursor: pointer; box-shadow: 0 -4px 4px -2px #FF0000;">
+                
+                <a>category</a>
+                <i class="fas fa-chevron-up" style="font-size:35px;color:red"></i>
+                
+</div>
+
+        </div>
+    </section>
+    <!--end floating-->
+    <!--pagination-->
+    <section>
+        <div style="text-align:center">
+            {% if products.has_previous %}
+            <a class="btn" href="/?page=1#pro">First</a>
+            <a class="btn" href="/?page={{products.previous_page_number}}#pro"><<-Previouspage</a>
+            {% endif %}
+
+            {% if products.has_next %}
+            <a class="btn" href="/?page={{products.next_page_number}}#pro">Nextpage->></a>
+
+
+
+            {% endif %}
+
+
+        </div>
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- footer section starts  -->
+
+    <section class="footer">
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3>quick links</h3>
+
+                <a href="/"> <i class="fas fa-arrow-right"></i> shop</a>
+
+            </div>
+
+            <div class="box">
+                <h3>extra links</h3>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my order </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my favorite </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my wishlist </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my account </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> terms or use </a>
+            </div>
+
+            <div class="box">
+                <h3>follow us</h3>
+                <a href="/email/"> <i class="fab fa-facebook-f"></i> facebook </a>
+                <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
+                <a href="#"> <i class="fab fa-instagram"></i> instagram </a>
+                <a href="#"> <i class="fab fa-linkedin"></i> linkedin </a>
+                <a href="#"> <i class="fab fa-pinterest"></i> pinterest </a>
+            </div>
+
+            <div class="box">
+                <h3>newsletter</h3>
+                <p>subscribe for latest updates</p>
+                <form action="">
+                    <input type="email" placeholder="enter your email">
+                    <input type="submit" value="subscribe" class="btn">
+                </form>
+                <img src="/static/image/payment.png" class="payment" alt="">
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="credit"> kookoole</section>
+
+    <!-- footer section ends -->
+    <!-- custom css file link  -->
+    <script src="/static/js/script.js"></script>
+
+
+
+
+
+</body>
+</html>

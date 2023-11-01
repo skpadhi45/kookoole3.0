@@ -1,0 +1,65 @@
+﻿ 
+
+
+ {% load cart %}
+ <!DOCTYPE html>
+
+<html>
+    <head>
+        <title>kookkoole</title>
+        <meta charset="windows-1252">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Your Ordered Details</h1>
+       
+        <table id="table" border="1">
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                
+                <th>Net_Price</th>
+            </tr>
+            {% for product in s_products %}
+            <tr>
+                <td>{{product.product}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.quantity}}</td>
+                 
+                <td>{{product.qnty_price}}</td>
+            </tr>
+            {% endfor %}
+           <tr>
+                <td> </td>
+                <td> </td>
+                <td>Total</td>
+                 
+                <td>Rs {{Total_price.qnty_price__sum}}</td>
+            </tr>  
+            
+        </table>
+
+
+        <h3>Total Price Rs : {{Total_price.qnty_price__sum}}</h3>
+
+        <h3>Payable Price(Includding delevery charge) Rs : {{Total_price_with_delevery}}</h3>
+        
+        <p id="val"></p>
+        
+        <script>
+            
+            var table = document.getElementById("table"), sumVal = 0;
+            
+            for(var i = 1; i < table.rows.length; i++)
+            {
+                sumVal = sumVal + parseInt(table.rows[i].cells[2].innerHTML);
+            }
+            
+            document.getElementById("val").innerHTML = "Sum Value = " + sumVal;
+            console.log(sumVal);
+            
+        </script>
+        
+    </body>
+</html>

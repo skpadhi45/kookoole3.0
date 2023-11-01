@@ -1,0 +1,414 @@
+ 
+
+
+ {% load cart %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shop</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
+</head>
+
+<body>
+
+    <!-- header section starts  -->
+
+
+    <header class="header">
+
+        <a href="/" class="logo"> <i class="fas fa-shopping-basket"></i> Kookoole </a>
+
+        <nav class="navbar">
+            <a href="/">Shop</a>
+
+        </nav>
+
+
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="search-btn" class="fas fa-search"></div>
+
+            <div id="cart-btn" class="fas fa-shopping-cart">
+            </div>
+            <span style="background-color: turquoise; padding-top: 0.15rem; padding-left: 0.15rem; padding-right: 0.17rem "><b>{{request.session.cart.keys|length}}</b></span>
+
+            <div id="login-btn" class="fas fa-user"></div>
+        </div>
+
+
+        <form action="" class="search-form">
+            <input type="search" placeholder="search here..." id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+        <div class="shopping-cart">
+
+
+            <a href="/cart-in/" class="btn">Your cart</a>
+            <a href="/manage-orders/" class="btn">manage your order</a>
+            <a href="/orders-status/" class="btn">Your Oder status</a>
+        </div>
+
+
+        <form action="/" method="POST" class="login-form">
+
+
+            {% csrf_token %}
+
+
+            {% if request.session.customer_id %}
+            <h3>log Out</h3>
+            <p>Log Out? <a href="/log-out/">click here</a></p>
+            {% else %}
+            <h3>login form</h3>
+            <p>Log In ? <a href="/log-in/">click here</a></p>
+            <p>forget password? <a href="#">click here</a></p>
+            <p>don't have an account? <a href="/sign-up/">create one</a></p>
+            {% endif %}
+        </form>
+    </header>
+
+    <!-- header section ends -->
+
+
+    <section class="home">
+        <h1 align="center">Your Cart</h1>
+
+
+        <div class="slides-container">
+            <table class="table" id="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">SL NO</th>
+                        <th hidden scope="col">Product_id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Product Image</th>
+
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col"> </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for product in s_products %}
+
+                    <tr>
+                        <td scope="row">{{forloop.counter}}</td>
+                        <td hidden><b>{{product.id}}</b></td>
+                        <td><b>{{product.name}}</b></td>
+                        <td><img style="height:75px;" id="" class="rounded-circle" src="{{product.image.url}}"></td>
+
+                        <td>
+                            <form action="#{{forloop.counter}}" method="POST">
+
+                                {% csrf_token %}
+                                <input hidden type="text" value='{{product.stock}}' name="stock">
+
+                                <input hidden type="text" value='{{product.id}}' name="id">
+                                <input hidden type="text" value='{{product.category_id}}' name="categoryid">
+
+                                {% if product|is_in_cart:request.session.cart %}
+                                <!--quntity increase button-->
+                                {% if product.stock <= 0 %}
+
+                                <input href="/" id="" type="submit" name="minus" class="float-left btn" value="-">
+                                <div class="float-left btn" style="background-color:red"> {{product|cart_quantity:request.session.cart}} </div>
+
+                                <input href="/" id="" type="submit" name="pluse" class="float-left btn" value="+">
+                                {% else %}
+                                <input href="/" id="" type="submit" name="minus" class="float-left btn" value="-">
+                                <div class="float-left btn" style="background-color:red"> {{product|cart_quantity:request.session.cart}} </div>
+
+                                <input href="/" id="" type="submit" name="pluse" class="float-left btn" value="+">
+
+                                {% endif %}
+
+                                <!--end quntity increase button-->
+                                {% else %}
+                                <!--add to card button-->
+                                <input href="/" type="submit" class="float-right btn" value="cart+">
+                                <!--end-->
+                                {% endif %}
+
+
+                            </form>
+                        </td>
+                        <td><b>Rs {{product.price}}</b></td>
+                        <td><b>Rs {{product|total_price:request.session.cart}}</b></td>
+
+                        <!--remove from cart button-->
+                        <td>
+                            <form action="#{{forloop.counter}}" method="POST">
+
+                                {% csrf_token %}
+
+                                <input hidden type="text" value='{{product.id}}' name="id">
+                                <input hidden type="text" value='{{product.category_id}}' name="categoryid">
+
+                                {% if product|is_in_cart:request.session.cart %}
+                                <!--quntity increase button-->
+                                {% if product.stock < product|cart_quantity:request.session.cart %}
+                                <h5 style="color: red">ଷ୍ଟକ୍ ନାହିଁ ।</h5>
+                                <input href="/" id="" type="submit" name="remove" class="float-left btn" value="Remove">
+                                {% else %}
+
+                                <input href="/" id="" type="submit" name="remove" class="float-left btn" value="Remove">
+                                {% endif %}
+
+                                <!--end quntity increase button-->
+                                {% else %}
+                                <!--add to card button-->
+                                <input href="/" type="submit" class="float-right btn" value="cart+">
+                                <!--end-->
+                                {% endif %}
+
+
+                            </form>
+
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+                <tfoot>
+
+                    <tr>
+                        {% if s_products|total_cart_price:request.session.cart > 0 %}
+                        <th colspan="5">
+
+                        </th>
+                        <th colspan="1"><h4><b>Total</b></h4></th>
+
+                        <th><h5><b style="color:black">Rs {{s_products|total_cart_price:request.session.cart}}</b></h5></th>
+                        {% else %}
+
+                        <th colspan="3">
+
+                        </th>
+
+
+                        <th><h5><b style="color:red"> your cart is empty</b></h5></th>
+
+
+
+                        {% endif %}
+
+                    </tr>
+
+                    <tr>
+                        {% if s_products|total_cart_price:request.session.cart > 0 %}
+                        <th colspan="5">
+
+                        </th>
+                        <th colspan="1"><h4><b>delevery charge</b></h4></th>
+
+                        <th><h5><b style="color:red">Rs  20.0</b></h5></th>
+                        {% else %}
+
+
+                        {% endif %}
+
+                    </tr>
+
+                    <tr>
+                        {% if s_products|total_cart_price:request.session.cart > 0 %}
+
+                        <th colspan="5">
+
+                        </th>
+                        <th colspan="1"><h4><b></b></h4></th>
+                        <th colspan="1"><h4><b>----------</b></h4></th>
+                        {% else %}
+
+
+                        {% endif %}
+
+                    </tr>
+                    <tr>
+                        {% if s_products|total_cart_price:request.session.cart > 0 %}
+
+                        <th colspan="5">
+
+                        </th>
+                        <th colspan="1"><h4><b></b></h4></th>
+                        <th colspan="1"><h4><b>Rs {{s_products|total_cart_price_includding_delevery_charges:request.session.cart}}</b></h4></th>
+                        {% else %}
+                        <th colspan="3">
+
+                        </th>
+
+
+                        <th><h5><b style="color:black"> <a href="/" class="btn">countinuing shoping</a></b></h5></th>
+
+
+                        {% endif %}
+
+
+                    </tr>
+
+                    <tr>
+                        {% if s_products|total_cart_price:request.session.cart > 0 %}
+
+                        <th colspan="5">
+
+                        </th>
+                        <th colspan="1"><h4><b></b></h4></th>
+                        <th colspan="1"><h4><b> <a href="/email/" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-strong border rounded float-left ">
+                                <h4>
+                                   <b style="color:red"> checkout </b>
+                                </h4></a> </b></h4></th>
+                        {% else %}
+                         
+
+                        {% endif %}
+
+
+                    </tr>
+
+
+
+
+                </tfoot>
+
+
+            </table>
+
+
+
+        </div>
+    </section>
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Check Out</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/check-out/" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"><b>Address</b></label>
+                            <input placeholder="enter curent address for current delevery within your pin if any(optional) " name="Address" style="text-transform:none" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"><b>Phone</b></label>
+                            <input placeholder="enter other phone number(optional)" name="Phone" style="text-transform:none" type="text" class="form-control" />
+                        </div>
+
+
+                        <button type="submit" class="btn float-right" id="press">
+                            place order for cash on delevery
+                        </button>
+
+
+
+                        <button type="button" class="btn">Close</button>
+
+                        
+                         
+
+
+</form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- footer section starts
+
+    <section class="footer">
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3>quick links</h3>
+
+                <a href="/"> <i class="fas fa-arrow-right"></i> shop</a>
+
+            </div>
+
+            <div class="box">
+                <h3>extra links</h3>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my order </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my favorite </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my wishlist </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> my account </a>
+                <a href="#"> <i class="fas fa-arrow-right"></i> terms or use </a>
+            </div>
+
+            <div class="box">
+                <h3>follow us</h3>
+                <a href="#"> <i class="fab fa-facebook-f"></i> facebook </a>
+                <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
+                <a href="#"> <i class="fab fa-instagram"></i> instagram </a>
+                <a href="#"> <i class="fab fa-linkedin"></i> linkedin </a>
+                <a href="#"> <i class="fab fa-pinterest"></i> pinterest </a>
+            </div>
+
+            <div class="box">
+                <h3>newsletter</h3>
+                <p>subscribe for latest updates</p>
+                <form action="">
+                    <input type="email" placeholder="enter your email">
+                    <input type="submit" value="subscribe" class="btn">
+                </form>
+                <img src="/static/image/payment.png" class="payment" alt="">
+            </div>
+
+        </div>
+
+    </section>-->
+
+    <section class="credit"> kookoole</section>
+
+    <!-- footer section ends -->
+    <!-- custom css file link  -->
+    <script src="/static/js/script.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+     
+
+</body>
+</html>
