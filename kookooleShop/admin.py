@@ -6,6 +6,7 @@ from kookooleShop.models import Product
 from kookooleShop.models import CustomerPin
 from kookooleShop.models import CustomerLogUp
 from kookooleShop.models import Order
+from kookooleShop.models import ContactUs
 
 
 class AdminCategoriesRoot(admin.ModelAdmin):
@@ -29,7 +30,9 @@ class AdminCustomerLogUp(admin.ModelAdmin):
 class AdminOrder(admin.ModelAdmin):
    list_display=['cancelation','customer','product' ,'price','stock','quantity','qnty_price','time','address','phone','status']
    search_fields=['phone']
-   
+class AdminContactUs(admin.ModelAdmin):
+   list_display=['email','phone','address','location']
+    
 
 # Register your models here.
 admin.site.register(CategoriesRoot ,AdminCategoriesRoot)
@@ -38,3 +41,4 @@ admin.site.register(Product ,AdminProduct)
 admin.site.register(CustomerLogUp ,AdminCustomerLogUp)
 admin.site.register(Order ,AdminOrder)
 admin.site.register(CustomerPin)
+admin.site.register(ContactUs ,AdminContactUs)

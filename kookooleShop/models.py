@@ -187,3 +187,12 @@ class Order(models.Model):
          #first_name = models.CharField(max_length=50, null=False)
          #last_name = models.CharField(max_length=50) 
          #dept = models.ForeignKey( Department , on_delete=models.CASCADE , default=1)
+class ContactUs(models.Model):
+    
+    email = models.EmailField()
+     
+    phone = models.CharField(max_length=13 ,default='')
+    address =models.CharField(max_length=200 , default='' ,blank=True)
+      
+    
+    location=models.URLField(default="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7660527.340719109!2d85.82489999999999!3d20.362600000000008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1695367904279!5m2!1sen!2sin")

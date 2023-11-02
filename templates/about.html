@@ -42,66 +42,82 @@
         </form>
 
         <div class="shopping-cart">
-            <div class="box">
-                <i class="fas fa-times"></i>
-                <img src="image/cart-1.jpg" alt="">
-                <div class="content">
-                    <h3>organic food</h3>
-                    <span class="quantity">1</span>
-                    <span class="multiply">x</span>
-                    <span class="price">$18.99</span>
-                </div>
-            </div>
-            <div class="box">
-                <i class="fas fa-times"></i>
-                <img src="image/cart-2.jpg" alt="">
-                <div class="content">
-                    <h3>organic food</h3>
-                    <span class="quantity">1</span>
-                    <span class="multiply">x</span>
-                    <span class="price">$18.99</span>
-                </div>
-            </div>
-            <div class="box">
-                <i class="fas fa-times"></i>
-                <img src="image/cart-3.jpg" alt="">
-                <div class="content">
-                    <h3>organic food</h3>
-                    <span class="quantity">1</span>
-                    <span class="multiply">x</span>
-                    <span class="price">$18.99</span>
-                </div>
-            </div>
-            <h3 class="total"> total : <span>56.97</span> </h3>
-            <a href="#" class="btn">checkout cart</a>
+
+
+            <a href="/cart-in/" class="btn">Your cart</a>
+            <a href="/manage-orders/" class="btn">manage your order</a>
+            <a href="/orders-status/" class="btn">Your Oder status</a>
         </div>
 
-        <form action="" class="login-form">
+        <form action="/" method="POST" class="login-form">
+
+
+            {% csrf_token %}
+
+
+            {% if request.session.customer_id %}
+            <h3>log Out</h3>
+            <p>Log Out? <a href="/log-out/">click here</a></p>
+            {% else %}
             <h3>login form</h3>
-            <input type="email" placeholder="enter your email" class="box">
-            <input type="password" placeholder="enter your password" class="box">
-            <div class="remember">
-                <input type="checkbox" name="" id="remember-me">
-                <label for="remember-me">remember me</label>
-            </div>
-            <input type="submit" value="login now" class="btn">
+            <p>Log In ? <a href="/log-in/">click here</a></p>
             <p>forget password? <a href="#">click here</a></p>
-            <p>don't have an account? <a href="#">create one</a></p>
+            <p>don't have an account? <a href="/sign-up/">create one</a></p>
+            {% endif %}
         </form>
 
     </header>
 
     <!-- header section ends -->
 
-    <div class="heading">
-        <h1>about us</h1>
-        <p> <a href="/">shop >></a> about </p>
-    </div>
+    <section class="home">
+
+        <div class="slides-container">
+
+            <div class="slide active">
+                <div class="content">
+                    <span>about us</span>
+                    <h3>about us</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-3.png" alt="">
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="content">
+                    <span>about us</span>
+                    <h3>about us</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-1.png" alt="">
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="content">
+                    <span>about us</span>
+                    <h3>about us</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-2.png" alt="">
+                </div>
+            </div>
+
+        </div>
+
+        <div id="next-slide" class="fas fa-angle-right" onclick="next()"></div>
+        <div id="prev-slide" class="fas fa-angle-left" onclick="next()"></div>
+
+    </section>
 
     <section class="about">
 
         <div class="image">
-            <img src="image/about-img.jpg" alt="">
+            <img src="/static/image/about-img.jpg" alt="">
         </div>
 
         <div class="content">
@@ -133,7 +149,7 @@
         <div class="box-container">
 
             <div class="box">
-                <img src="image/gallery-img-1.jpg" alt="">
+                <img src="/static/image/gallery-img-1.jpg" alt="">
                 <div class="icons">
                     <a href="#" class="fas fa-eye"></a>
                     <a href="#" class="fas fa-heart"></a>
@@ -142,7 +158,7 @@
             </div>
 
             <div class="box">
-                <img src="image/gallery-img-2.jpg" alt="">
+                <img src="/static/image/gallery-img-2.jpg" alt="">
                 <div class="icons">
                     <a href="#" class="fas fa-eye"></a>
                     <a href="#" class="fas fa-heart"></a>
@@ -151,7 +167,7 @@
             </div>
 
             <div class="box">
-                <img src="image/gallery-img-3.jpg" alt="">
+                <img src="/static/image/gallery-img-3.jpg" alt="">
                 <div class="icons">
                     <a href="#" class="fas fa-eye"></a>
                     <a href="#" class="fas fa-heart"></a>
@@ -160,7 +176,7 @@
             </div>
 
             <div class="box">
-                <img src="image/gallery-img-4.jpg" alt="">
+                <img src="/static/image/gallery-img-4.jpg" alt="">
                 <div class="icons">
                     <a href="#" class="fas fa-eye"></a>
                     <a href="#" class="fas fa-heart"></a>
@@ -169,7 +185,7 @@
             </div>
 
             <div class="box">
-                <img src="image/gallery-img-5.jpg" alt="">
+                <img src="/static/image/gallery-img-5.jpg" alt="">
                 <div class="icons">
                     <a href="#" class="fas fa-eye"></a>
                     <a href="#" class="fas fa-heart"></a>
@@ -178,7 +194,7 @@
             </div>
 
             <div class="box">
-                <img src="image/gallery-img-6.jpg" alt="">
+                <img src="/static/image/gallery-img-6.jpg" alt="">
                 <div class="icons">
                     <a href="#" class="fas fa-eye"></a>
                     <a href="#" class="fas fa-heart"></a>

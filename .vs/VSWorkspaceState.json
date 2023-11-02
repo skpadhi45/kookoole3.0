@@ -1,15 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\kookoole",
     "\\kookooleShop",
+    "\\kookooleShop\\middlewares",
     "\\kookooleShop\\migrations",
     "\\kookooleShop\\templatetags",
-    "\\media",
     "\\static",
     "\\static\\css",
+    "\\static\\image",
     "\\static\\js",
     "\\templates"
   ],
+  "SelectedNode": "\\static\\image\\heading-bg.jpg",
   "PreviewInSolutionExplorer": false
 }

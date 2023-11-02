@@ -18,6 +18,7 @@ from kookooleShop.models import CategoriesRoot
 from kookooleShop.models import CustomerPin
 from kookooleShop.models import CustomerLogUp
 from kookooleShop.models import Order
+from kookooleShop.models import ContactUs
 from kookooleShop.middlewares.auth import auth_middleware
 from django.utils.decorators import method_decorator
 from django.core.paginator import Paginator
@@ -980,8 +981,15 @@ def Change_your_password(request):
         return render(request , "change_your_password.html" ,{'error': success_message})
 
 def Contact(request):
+    contact_dtls = ContactUs.objects.all()
+    for i in contact_dtls:
+      phone_no =i.phone
+      email=i.email
+      address=i.address
+      location=i.location
+    #print(phone_no)
        
-     return render(request,"contact.html")
+    return render(request,"contact.html",{'phone_no':phone_no ,'email':email ,'address':address ,'location':location})
       
 def about(request):
        

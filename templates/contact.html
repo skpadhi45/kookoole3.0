@@ -17,7 +17,7 @@
 
     <!-- header section starts  -->
 
-    <header class="header">
+    <header class="header" >
 
         <a href="/" class="logo"> <i class="fas fa-shopping-basket"></i> kookoole </a>
 
@@ -42,61 +42,80 @@
         </form>
 
         <div class="shopping-cart">
-            <div class="box">
-                <i class="fas fa-times"></i>
-                <img src="image/cart-1.jpg" alt="">
-                <div class="content">
-                    <h3>organic food</h3>
-                    <span class="quantity">1</span>
-                    <span class="multiply">x</span>
-                    <span class="price">$18.99</span>
-                </div>
-            </div>
-            <div class="box">
-                <i class="fas fa-times"></i>
-                <img src="image/cart-2.jpg" alt="">
-                <div class="content">
-                    <h3>organic food</h3>
-                    <span class="quantity">1</span>
-                    <span class="multiply">x</span>
-                    <span class="price">$18.99</span>
-                </div>
-            </div>
-            <div class="box">
-                <i class="fas fa-times"></i>
-                <img src="image/cart-3.jpg" alt="">
-                <div class="content">
-                    <h3>organic food</h3>
-                    <span class="quantity">1</span>
-                    <span class="multiply">x</span>
-                    <span class="price">$18.99</span>
-                </div>
-            </div>
-            <h3 class="total"> total : <span>56.97</span> </h3>
-            <a href="#" class="btn">checkout cart</a>
-        </div>
 
-        <form action="" class="login-form">
+
+            <a href="/cart-in/" class="btn">Your cart</a>
+            <a href="/manage-orders/" class="btn">manage your order</a>
+            <a href="/orders-status/" class="btn">Your Oder status</a>
+        </div>
+             
+             
+             
+
+        <form action="/" method="POST" class="login-form">
+
+
+            {% csrf_token %}
+
+
+            {% if request.session.customer_id %}
+            <h3>log Out</h3>
+            <p>Log Out? <a href="/log-out/">click here</a></p>
+            {% else %}
             <h3>login form</h3>
-            <input type="email" placeholder="enter your email" class="box">
-            <input type="password" placeholder="enter your password" class="box">
-            <div class="remember">
-                <input type="checkbox" name="" id="remember-me">
-                <label for="remember-me">remember me</label>
-            </div>
-            <input type="submit" value="login now" class="btn">
+            <p>Log In ? <a href="/log-in/">click here</a></p>
             <p>forget password? <a href="#">click here</a></p>
-            <p>don't have an account? <a href="#">create one</a></p>
+            <p>don't have an account? <a href="/sign-up/">create one</a></p>
+            {% endif %}
         </form>
 
     </header>
 
     <!-- header section ends -->
 
-    <div class="heading">
-        <h1>contact us</h1>
-        <p> <a href="/">shop >></a> contact </p>
-    </div>
+    <section class="home" >
+
+        <div class="slides-container">
+
+            <div class="slide active">
+                <div class="content">
+                    <span>feel free to</span>
+                    <h3>contact us</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-3.png" alt="">
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="content">
+                    <span>feel free to</span>
+                    <h3>contact  us</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-1.png" alt="">
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="content">
+                    <span>feel free to</span>
+                    <h3>contact  us</h3>
+                    <a href="/#pro" class="btn">shop now</a>
+                </div>
+                <div class="image">
+                    <img src="/static/image/home-img-2.png" alt="">
+                </div>
+            </div>
+
+        </div>
+
+        <div id="next-slide" class="fas fa-angle-right" onclick="next()"></div>
+        <div id="prev-slide" class="fas fa-angle-left" onclick="next()"></div>
+
+    </section>
 
     <section class="contact">
 
@@ -105,21 +124,21 @@
             <div class="icons">
                 <i class="fas fa-phone"></i>
                 <h3>our number</h3>
-                <p>7787803742</p>
-                <p>9148024955</p>
+                <p>{{phone_no}}</p>
+                 
             </div>
 
             <div class="icons">
                 <i class="fas fa-envelope"></i>
                 <h3>our email</h3>
-                <p>kookoole45@gmail.com</p>
+                <p>{{email}}</p>
                 <p></p>
             </div>
 
             <div class="icons">
                 <i class="fas fa-map-marker-alt"></i>
                 <h3>our address</h3>
-                <p>Bhatapada,Debidol,Jagatsinghpur odisha - 754109</p>
+                <p>{{address}}</p>
             </div>
 
         </div>
@@ -140,7 +159,7 @@
                 <input type="submit" value="send message" class="btn">
             </form>
 
-            <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7660527.340719109!2d85.82489999999999!3d20.362600000000008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1695367904279!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+            <iframe class="map" src="{{location}}" allowfullscreen="" loading="lazy"></iframe>
              
         </div>
 
